@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app" class="demo">
+        <button v-on:click="greet">Greet</button>
+        <input type="text" v-model="mymessage"></input>
+        <p>message is:{{mymessage}}</p>
+
+        <!--三种风格不同的select-->
+        <select v-model="selected1" multiple style="width: 50px;">
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <span>Selected: {{ selected1 }}</span>
+        <br>
+        <select v-model="selected2">
+            <option disabled value="">请选择</option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+          </select>
+          <span>Selected: {{ selected2 }}</span>
+        <br>
+        <!--动态select要提供selected3和option两组值-->
+        <select v-model="selected3">
+            <option v-for="option in options" v-bind:value="option.value">
+                {{ option.text }}
+            </option>
+        </select>
+        <br>
+        <span>Selected: {{ selected3 }}</span>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                object: [
+                    { title: 'How to do lists in Vue' },
+                    { author: 'Jane Doe' },
+                    { publishedAt: '2016-04-10' },
+                ],
+                mymessage: 'hello vue!!!!',
+                selected1: '',
+                selected2: '',
+                selected3: 'A',
+                options:[
+                    { text: 'One', value: 'A' },
+                    { text: 'Two', value: 'B' },
+                    { text: 'Three', value: 'C' }
+                ],
+            },
+            methods: {
+                greet: function () {
+                    alert(this.$data.message)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
