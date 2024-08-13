@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>组件和自定义事件</title>
+</head>
+
+<body>
+    <div id="app">
+        <todo>            
+            <todo-1 slot="todo-title" v-bind:title1="title_in_data"></todo-1>
+            <!--通过v-on:remove_bridge="app_remove(serial)写法传递serial参数-->
+            <todo-content slot="todo-content" v-for="(item, serial) in items_in_data" 
+                v-bind:row="item" v-bind:row_index="serial" v-on:remove_bridge="app_remove(serial)">      
+            </todo-content>
+        </todo>
+    </div>
+
+    <script>       
+        /*
+        <div id="app">
+            <todo>
+                <todo-1 slot="todo-title" v-bind:title1="title_in_data"></todo-1>
+                <todo-content slot="todo-content" v-for="item in items" v-bind:row="item"></todo-content>
+            </todo>
+        </div>
+        */
+        //大组件使用slot标签插入小组件后展开来就相当于
+        /*
+        <div>
+            <div>{{title1}}</div>
+            <ul>
+                <li>{{row}}</li>
+            </ul>
+        </div>
+        */
+
+        //定义待办事项总组件,字符串排版后就相当于
+        /*
+        <div>
+            <slot name="todo-title"></slot>
+            <ul>
+                <slot name="todo-content"></slot>
+            </ul>
+        </div>
+        */
+        Vue.component("todo", {
+            template:'<div><slot name="todo-title"></slot><ul><slot name="todo-content"></slot></ul></div>'
+        });
+        //标题组件
+        Vue.component("todo-1", {
+            props:['title1'],
+            template:'<div>{{title1}}</div>',
+        });
+        //内容组件
+        Vue.component("todo-content", {
+            props:['row','row_index'],
+            template:'<li>{{row_index}}---{{row}}<button @click="remove">删除</button></li>',
+            methods:{
+                remove:function(){
+                    //alert(99)
+                    this.$emit("remove_bridge")
+                }
+            }
+        });
+
+        var app = new Vue({
+            el:"#app",
+            data:{
+                title_in_data:'标题1',
+                items_in_data:["香蕉11","苹果21","哈密瓜31","芒果","草莓","水蜜桃"],
+            },
+            methods:{
+                //serial 来自于 v-for="(item, serial) in items_in_data" 
+                app_remove:function(serial){
+                    alert(serial)
+                    this.items_in_data.splice(serial,1)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
