@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import bg1 from '@/views/sub_bg/bg1.vue'
 import bg2 from '@/views/sub_bg/bg2.vue'
 
+
 Vue.use(VueRouter)
 
 const routes = [
